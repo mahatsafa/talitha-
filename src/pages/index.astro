@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Splash from '../components/Splash.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Wawasan from '../components/Wawasan.astro';
+import Kesenian from '../components/Kesenian.astro';
+import Adat from '../components/Adat.astro';
+import Peta from '../components/Peta.astro';
+import Kuliner from '../components/Kuliner.astro';
+import Interaktif from '../components/Interaktif.astro';
+import Quiz from '../components/Quiz.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="Wawasan Nusantara & Warisan Budaya Jawa Timur"
+  description="Jelajahi kesenian, rumah adat, kuliner, dan peta interaktif 38 kabupaten/kota Jawa Timur, lengkap dengan gamelan pelog, Boso Walikan, dan quiz budaya."
+>
+  <Splash />
+  <Navbar />
+  <Hero />
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-32 relative z-10">
+    <Wawasan />
+    <Kesenian />
+    <Adat />
+    <Peta />
+    <Kuliner />
+    <Interaktif />
+    <Quiz />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  import '../scripts/efek';
+</script>

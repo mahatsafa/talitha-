@@ -1,0 +1,47 @@
+---
+const ornamen = 'M50 10 C30 50, 70 80, 50 120 C20 160, 80 200, 50 250 C20 300, 80 340, 50 390 L50 400 L45 400 C10 320, 10 80, 45 0 Z';
+---
+
+<header class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20 px-4">
+  <div class="absolute inset-0 z-0">
+    <img
+      src="https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&w=2000&q=80"
+      alt="Gunung Bromo Jawa Timur"
+      fetchpriority="high"
+      class="w-full h-full object-cover object-center brightness-50 contrast-125 scale-105"
+      onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/14110d/d4af37?text=Gunung+Bromo+Jawa+Timur'"
+    />
+    <div class="absolute inset-0 bg-linear-to-t from-obsidian via-obsidian/70 to-transparent"></div>
+  </div>
+
+  <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+    <div class="reveal-init reveal-abstract-skew inline-block px-4 py-1.5 rounded-full border border-gold/40 bg-obsidian/80 text-gold text-sm tracking-widest uppercase mb-6 shadow-lg">
+      <i class="fa-solid fa-gem mr-2" aria-hidden="true"></i> Eksplorasi Kebudayaan Daerah
+    </div>
+    <h2 class="reveal-init reveal-elastic-slide font-cinzel text-4xl sm:text-6xl md:text-7xl font-extrabold gold-gradient-text mb-6 leading-tight">
+      Jawa Timur:<br />Jer Basuki Mawa Beya
+    </h2>
+    <p class="reveal-init reveal-spiral-twist font-serif text-lg sm:text-2xl text-amber-100/90 max-w-2xl mx-auto mb-8 font-light italic">
+      "Keberhasilan dan kebahagiaan membutuhkan pengorbanan, kerja keras, serta keteguhan jiwa."
+    </p>
+    <div class="reveal-init reveal-3d-flip flex flex-wrap justify-center gap-4">
+      <a href="#peta" class="px-8 py-3.5 bg-gold text-obsidian font-bold rounded-full hover:bg-amber-300 shadow-[0_0_20px_rgba(212,175,55,0.4)] transition">
+        <i class="fa-solid fa-map-location-dot mr-2" aria-hidden="true"></i> Jelajahi Peta Kebudayaan
+      </a>
+      <a href="#kesenian" class="px-8 py-3.5 bg-obsidian/80 border border-gold/50 text-gold font-semibold rounded-full hover:bg-gold/20 transition">
+        <i class="fa-solid fa-masks-theater mr-2" aria-hidden="true"></i> Kesenian Tradisional
+      </a>
+    </div>
+  </div>
+
+  <a href="#wawasan" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-gold/70 hover:text-gold animate-bounce" aria-label="Gulir ke konten">
+    <i class="fa-solid fa-chevron-down text-xl" aria-hidden="true"></i>
+  </a>
+</header>
+
+<div class="hidden xl:block fixed left-2 top-1/3 z-20 pointer-events-none wayang-ornament" aria-hidden="true">
+  <svg class="w-24 h-96 text-gold fill-current" viewBox="0 0 100 400"><path d={ornamen} /></svg>
+</div>
+<div class="hidden xl:block fixed right-2 top-1/3 z-20 pointer-events-none wayang-ornament" aria-hidden="true">
+  <svg class="w-24 h-96 text-gold fill-current -scale-x-100" viewBox="0 0 100 400"><path d={ornamen} /></svg>
+</div>

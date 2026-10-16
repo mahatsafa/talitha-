@@ -1,0 +1,65 @@
+---
+const motif = 'M50,5 L90,25 L90,75 L50,95 L10,75 L10,25 Z M50,15 L20,30 L20,70 L50,85 L80,70 L80,30 Z';
+---
+
+<div
+  id="splashScreen"
+  class="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-obsidian transition-opacity duration-1000"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="splashJudul"
+>
+  <div class="gate-left absolute left-0 top-0 bottom-0 w-1/2 bg-linear-to-r from-charcoal via-obsidian to-[#1a140d] border-r-4 border-gold z-20 flex items-center justify-end pr-4 md:pr-12 shadow-2xl">
+    <svg class="w-32 h-32 md:w-64 md:h-64 text-gold opacity-30" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+      <path d={motif} /><circle cx="50" cy="50" r="15" />
+    </svg>
+  </div>
+  <div class="gate-right absolute right-0 top-0 bottom-0 w-1/2 bg-linear-to-l from-charcoal via-obsidian to-[#1a140d] border-l-4 border-gold z-20 flex items-center justify-start pl-4 md:pl-12 shadow-2xl">
+    <svg class="w-32 h-32 md:w-64 md:h-64 text-gold opacity-30" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+      <path d={motif} /><circle cx="50" cy="50" r="15" />
+    </svg>
+  </div>
+
+  <div class="splash-isi relative z-30 text-center px-6 max-w-3xl mx-auto transition-opacity duration-500">
+    <div class="inline-block p-3 rounded-full border border-gold/40 bg-gold/10 mb-4 animate-pulse">
+      <i class="fa-solid fa-crown text-3xl md:text-4xl text-gold" aria-hidden="true"></i>
+    </div>
+    <p class="font-aksara text-2xl md:text-4xl text-gold mb-2 tracking-wide font-bold" lang="jv">ꦱꦸꦒꦼꦁꦫꦮꦸꦃꦲꦶꦁꦗꦮꦠꦶꦩꦸꦂ</p>
+    <h1 id="splashJudul" class="font-cinzel text-3xl md:text-6xl font-bold gold-gradient-text tracking-wider mb-4 uppercase">
+      Sugeng Rawuh
+    </h1>
+    <p class="font-serif text-lg md:text-2xl text-amber-200/90 italic mb-8">
+      Jelajahi Kemegahan Wawasan Nusantara &amp; Warisan Budaya Jawa Timur
+    </p>
+    <button
+      id="enterBtn"
+      autofocus
+      class="group relative inline-flex items-center gap-3 px-8 py-4 bg-linear-to-r from-gold-dark via-gold to-amber-300 text-obsidian font-bold text-base md:text-lg rounded-full shadow-[0_0_25px_rgba(212,175,55,0.4)] hover:shadow-[0_0_40px_rgba(255,215,0,0.8)] hover:scale-105 transition-all duration-300"
+    >
+      <span>MLEBU / JELAJAHI KEBUDAYAAN</span>
+      <i class="fa-solid fa-drum text-xl group-hover:rotate-12 transition-transform" aria-hidden="true"></i>
+    </button>
+    <p class="text-xs text-amber-400/60 mt-4 tracking-widest uppercase">Tekan tombol untuk membunyikan Gong &amp; membuka gerbang</p>
+  </div>
+</div>
+
+<script>
+  import { mainkanGong } from '../scripts/audio';
+
+  const splash = document.getElementById('splashScreen')!;
+  const tombol = document.getElementById('enterBtn')!;
+  let terbuka = false;
+
+  tombol.addEventListener('click', () => {
+    if (terbuka) return;
+    terbuka = true;
+    mainkanGong();
+    splash.querySelector<HTMLElement>('.splash-isi')!.style.opacity = '0';
+    splash.classList.add('gate-open');
+    document.body.classList.remove('terkunci');
+    setTimeout(() => {
+      splash.style.opacity = '0';
+      setTimeout(() => splash.remove(), 1000);
+    }, 800);
+  });
+</script>

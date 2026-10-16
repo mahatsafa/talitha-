@@ -1,0 +1,45 @@
+---
+import JudulSection from './JudulSection.astro';
+
+const fakta = [
+  { ikon: 'fa-volcano', judul: 'Geografis Ikonik', isi: 'Gunung Bromo, Kawah Ijen, Tumpak Sewu, Savana Baluran' },
+  { ikon: 'fa-landmark-dome', judul: 'Warisan Kerajaan', isi: 'Pusat Kejayaan Majapahit, Singhasari, & Kediri' },
+  { ikon: 'fa-users', judul: '38 Kab / Kota', isi: '29 Kabupaten & 9 Kota dengan ragam karakter lokal' },
+  { ikon: 'fa-masks-theater', judul: '6 Zona Budaya', isi: 'Arekan, Mataraman, Tapak Kuda, Tengger, Madura, Pantura' },
+];
+---
+
+<section id="wawasan" class="scroll-mt-28">
+  <JudulSection kecil="Konsepsi Geopolitik & Kebudayaan" judul="Wawasan Nusantara & Jawa Timur" />
+
+  <div class="grid md:grid-cols-2 gap-8 items-center">
+    <div class="reveal-init reveal-abstract-skew gold-card p-8 rounded-2xl relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 text-gold/10 text-9xl" aria-hidden="true">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+      <h3 class="font-serif text-2xl font-bold text-gold mb-4 flex items-center gap-3">
+        <i class="fa-solid fa-earth-asia text-amber-400" aria-hidden="true"></i> Hakekat Wawasan Nusantara
+      </h3>
+      <p class="text-amber-100/80 leading-relaxed mb-4">
+        <strong>Wawasan Nusantara</strong> adalah cara pandang dan sikap bangsa Indonesia mengenai diri dan bentuk geografisnya
+        berdasarkan Pancasila dan UUD 1945. Konsep ini menekankan persatuan wilayah dan penghormatan terhadap kebhinekaan budaya.
+      </p>
+      <p class="text-amber-100/80 leading-relaxed">
+        Di Jawa Timur, prinsip Wawasan Nusantara tecermin dari integrasi erat antara sub-kebudayaan (Arekan, Mataraman, Tapak
+        Kuda/Osing, Tengger, Madura, dan Pantura) yang saling melengkapi dalam keharmonisan bingkai NKRI.
+      </p>
+    </div>
+
+    <div class="reveal-init reveal-spiral-twist grid grid-cols-2 gap-4">
+      {
+        fakta.map((f) => (
+          <div class="gold-card p-5 sm:p-6 rounded-xl text-center">
+            <i class={`fa-solid ${f.ikon} text-4xl text-gold mb-3`} aria-hidden="true" />
+            <h4 class="font-bold text-gold text-base sm:text-lg mb-1">{f.judul}</h4>
+            <p class="text-xs text-amber-200/70">{f.isi}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

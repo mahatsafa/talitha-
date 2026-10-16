@@ -1,0 +1,192 @@
+---
+import JudulSection from './JudulSection.astro';
+import { NAMA_NADA } from '../lib/pelog';
+import { PITUTUR } from '../data/konten';
+import { MAKS_INPUT, CONTOH_KOSONG } from '../lib/walikan';
+
+const nada = NAMA_NADA.slice(0, 6).map((nama, i) => ({ no: i + 1, nama }));
+const awal = PITUTUR[0];
+---
+
+<section id="interaktif" class="scroll-mt-28 space-y-16">
+  <JudulSection kecil="Fitur Interaktif Kebudayaan" judul="Gamelan Synth & Kearifan Lokal" />
+
+  <div class="gold-card diam p-6 sm:p-8 rounded-3xl relative overflow-hidden">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+      <div>
+        <h3 class="font-serif text-2xl font-bold text-gold flex items-center gap-3">
+          <i class="fa-solid fa-compact-disc text-amber-400" aria-hidden="true"></i> Synthesizer Gamelan Laras Pelog
+        </h3>
+        <p class="text-xs text-amber-200/70 mt-1">
+          Tekan tombol atau gunakan keyboard (1 - 7) untuk memainkan bilah Saron dengan laras pelog dan Gong Ageng!
+        </p>
+      </div>
+      <canvas id="audioCanvas" width="560" height="120" class="w-full max-w-[280px] h-[60px] border border-gold/30 shadow-inner" aria-hidden="true"></canvas>
+    </div>
+
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
+      {
+        nada.map((n) => (
+          <button data-nada={n.no} class="gamelan-key bg-charcoal border-2 border-gold/60 p-4 sm:p-5 rounded-2xl text-center hover:border-gold" aria-label={`Nada ${n.no} ${n.nama}`}>
+            <span class="block text-2xl font-bold text-gold">{n.no}</span>
+            <span class="text-xs text-amber-200/60 font-serif">{n.nama} / Pelog</span>
+          </button>
+        ))
+      }
+      <button data-nada="gong" class="gamelan-key col-span-3 sm:col-span-4 md:col-span-1 bg-linear-to-b from-amber-700 to-amber-900 border-2 border-gold p-4 sm:p-5 rounded-2xl text-center hover:brightness-125" aria-label="Gong Ageng (tombol 7)">
+        <span class="block text-2xl font-extrabold text-gold">GONG</span>
+        <span class="text-xs text-amber-200 font-serif">Ageng · 7</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-8">
+    <div class="gold-card diam p-6 sm:p-8 rounded-2xl flex flex-col justify-between">
+      <div>
+        <h3 class="font-serif text-2xl font-bold text-gold mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-language text-amber-400" aria-hidden="true"></i> Penerjemah Boso Walikan Malang
+        </h3>
+        <p class="text-xs text-amber-200/70 mb-6">Ketik kata untuk dibalik otomatis sesuai dialek kera Ngalam (Arema)!</p>
+        <div class="space-y-4">
+          <div>
+            <label for="walikanInput" class="text-xs uppercase text-gold font-semibold block mb-1">Teks asli Bahasa Indonesia / Jawa:</label>
+            <input
+              type="text"
+              id="walikanInput"
+              maxlength={MAKS_INPUT}
+              autocomplete="off"
+              placeholder="Contoh: Arema, Malang, Bakso, Mas..."
+              class="w-full px-4 py-3 rounded-xl bg-obsidian border border-gold/40 text-amber-100 focus:outline-none focus:border-gold"
+            />
+          </div>
+          <div>
+            <span class="text-xs uppercase text-gold font-semibold block mb-1">Hasil Boso Walikan Malangan:</span>
+            <output id="walikanOutput" for="walikanInput" aria-live="polite" class="w-full px-4 py-4 rounded-xl bg-charcoal border border-gold/20 text-gold font-mono text-xl font-bold min-h-[56px] flex items-center break-all">
+              {CONTOH_KOSONG}
+            </output>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 pt-4 border-t border-gold/10 text-xs text-amber-200/60 italic">
+        Contoh umum: Arema → Amera | Malang → Ngalam | Bakso → Oskab | Mas → Sam
+      </div>
+    </div>
+
+    <div class="gold-card diam p-6 sm:p-8 rounded-2xl flex flex-col justify-between">
+      <div>
+        <h3 class="font-serif text-2xl font-bold text-gold mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-quote-left text-amber-400" aria-hidden="true"></i> Pitutur Luhur Jawa
+        </h3>
+        <p class="text-xs text-amber-200/70 mb-6">Mutiara falsafah kebijaksanaan hidup leluhur Jawa Timur</p>
+        <div id="quoteBox" aria-live="polite" class="p-6 rounded-xl bg-obsidian/80 border border-gold/30 text-center space-y-3 min-h-[160px] flex flex-col justify-center">
+          <p id="quoteAksara" class="font-aksara text-xl text-gold" lang="jv">{awal.aksara}</p>
+          <p id="quoteJawa" class="font-serif text-lg text-amber-200 font-bold italic">"{awal.jawa}"</p>
+          <p id="quoteArti" class="text-xs text-amber-100/80">{awal.arti}</p>
+        </div>
+      </div>
+      <button id="quoteBtn" class="mt-6 w-full py-3 bg-linear-to-r from-gold-dark to-gold text-obsidian font-bold rounded-xl hover:brightness-110 transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-rotate" aria-hidden="true"></i> Pitutur Luhur Lainnya
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { mainkanNada, mainkanGong, getAnalyser, sedangBerbunyi, saatBerbunyi } from '../scripts/audio';
+  import { terjemahWalikan } from '../lib/walikan';
+  import { PITUTUR } from '../data/konten';
+
+  // --- Gamelan ---
+  const tombol = new Map<string, HTMLButtonElement>();
+  document.querySelectorAll<HTMLButtonElement>('[data-nada]').forEach((b) => tombol.set(b.dataset.nada!, b));
+
+  const pukul = (kunci: string) => {
+    if (kunci === 'gong') mainkanGong();
+    else mainkanNada(Number(kunci));
+  };
+  tombol.forEach((b, k) => b.addEventListener('click', () => pukul(k)));
+
+  addEventListener('keydown', (e) => {
+    const t = e.target as HTMLElement;
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (t.closest('input, textarea, select, [contenteditable="true"], dialog[open]')) return;
+    if (!/^[1-7]$/.test(e.key)) return;
+    const kunci = e.key === '7' ? 'gong' : e.key;
+    pukul(kunci);
+    const b = tombol.get(kunci);
+    b?.classList.add('active-key');
+    setTimeout(() => b?.classList.remove('active-key'), 150);
+  });
+
+  // --- Visualizer gelombang nyata dari AnalyserNode ---
+  const canvas = document.getElementById('audioCanvas') as HTMLCanvasElement;
+  const g = canvas.getContext('2d')!;
+  let data: Uint8Array<ArrayBuffer> | null = null;
+  let menggambar = false;
+
+  const garisDiam = () => {
+    g.clearRect(0, 0, canvas.width, canvas.height);
+    g.strokeStyle = 'rgba(212,175,55,0.35)';
+    g.lineWidth = 2;
+    g.beginPath();
+    g.moveTo(0, canvas.height / 2);
+    g.lineTo(canvas.width, canvas.height / 2);
+    g.stroke();
+  };
+
+  const gambar = () => {
+    const an = getAnalyser();
+    if (!an || !sedangBerbunyi()) {
+      menggambar = false;
+      garisDiam();
+      return;
+    }
+    data ??= new Uint8Array(an.fftSize);
+    an.getByteTimeDomainData(data);
+    g.clearRect(0, 0, canvas.width, canvas.height);
+    g.lineWidth = 3;
+    g.strokeStyle = '#d4af37';
+    g.shadowColor = '#ffd700';
+    g.shadowBlur = 8;
+    g.beginPath();
+    const langkah = canvas.width / data.length;
+    for (let i = 0; i < data.length; i++) {
+      const y = (data[i] / 255) * canvas.height;
+      if (i === 0) g.moveTo(0, y);
+      else g.lineTo(i * langkah, y);
+    }
+    g.stroke();
+    g.shadowBlur = 0;
+    requestAnimationFrame(gambar);
+  };
+
+  saatBerbunyi(() => {
+    if (!menggambar) {
+      menggambar = true;
+      requestAnimationFrame(gambar);
+    }
+  });
+  garisDiam();
+
+  // --- Boso Walikan ---
+  const inputWalikan = document.getElementById('walikanInput') as HTMLInputElement;
+  const hasilWalikan = document.getElementById('walikanOutput')!;
+  inputWalikan.addEventListener('input', () => {
+    hasilWalikan.textContent = terjemahWalikan(inputWalikan.value);
+  });
+
+  // --- Pitutur ---
+  const kotak = document.getElementById('quoteBox')!;
+  let indeks = 0;
+  document.getElementById('quoteBtn')!.addEventListener('click', () => {
+    indeks = (indeks + 1) % PITUTUR.length;
+    const q = PITUTUR[indeks];
+    kotak.style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('quoteAksara')!.textContent = q.aksara;
+      document.getElementById('quoteJawa')!.textContent = `"${q.jawa}"`;
+      document.getElementById('quoteArti')!.textContent = q.arti;
+      kotak.style.opacity = '1';
+    }, 250);
+  });
+</script>

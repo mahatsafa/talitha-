@@ -1,0 +1,104 @@
+---
+import { SOAL_QUIZ } from '../data/konten';
+---
+
+<section id="quiz" class="scroll-mt-28">
+  <div class="gold-card diam p-6 sm:p-12 rounded-3xl max-w-4xl mx-auto relative overflow-hidden">
+    <div class="text-center mb-8">
+      <span class="text-gold uppercase tracking-widest text-sm font-semibold">Uji Pengetahuan Budaya</span>
+      <h2 class="font-cinzel text-3xl sm:text-4xl font-bold gold-gradient-text mt-1">Quiz Kebudayaan Jatim</h2>
+      <p class="text-xs text-amber-200/70 mt-2">Uji seberapa jauh pemahamanmu mengenai warisan kebudayaan Jawa Timur!</p>
+    </div>
+
+    <div id="quizContainer">
+      <div class="flex justify-between items-center mb-3 text-sm text-gold font-bold">
+        <span id="quizProgress">Pertanyaan 1 dari {SOAL_QUIZ.length}</span>
+        <span id="quizScore">Skor: 0</span>
+      </div>
+      <div class="h-1.5 rounded-full bg-obsidian border border-gold/20 mb-6 overflow-hidden">
+        <div id="quizBar" class="h-full bg-linear-to-r from-gold-dark to-gold transition-all duration-500" style="width:0%"></div>
+      </div>
+      <div class="p-5 sm:p-6 bg-obsidian/90 rounded-2xl border border-gold/30">
+        <h3 id="quizQuestion" class="font-serif text-lg sm:text-xl font-bold text-amber-100 mb-4">{SOAL_QUIZ[0].q}</h3>
+        <div id="quizOptions" class="grid sm:grid-cols-2 gap-3"></div>
+      </div>
+    </div>
+
+    <div id="quizResult" class="hidden text-center py-8 space-y-4" aria-live="polite">
+      <i class="fa-solid fa-trophy text-6xl text-gold animate-bounce" aria-hidden="true"></i>
+      <h3 class="font-cinzel text-3xl font-bold text-gold">Selamat! Quiz Selesai</h3>
+      <p id="finalScoreText" class="text-xl text-amber-200 font-serif"></p>
+      <p id="finalPesan" class="text-sm text-amber-200/70"></p>
+      <button id="quizUlang" class="px-8 py-3 bg-gold text-obsidian font-bold rounded-full hover:bg-amber-300 transition">
+        <i class="fa-solid fa-arrow-rotate-right mr-2" aria-hidden="true"></i> Coba Lagi
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import confetti from 'canvas-confetti';
+  import { buatQuiz } from '../lib/quiz';
+  import { SOAL_QUIZ } from '../data/konten';
+  import { mainkanNada, bunyiSalah } from '../scripts/audio';
+
+  const quiz = buatQuiz(SOAL_QUIZ);
+  const wadah = document.getElementById('quizContainer')!;
+  const hasil = document.getElementById('quizResult')!;
+  const opsiEl = document.getElementById('quizOptions')!;
+  let terkunci = false;
+
+  function tampilkan() {
+    const s = quiz.soal;
+    document.getElementById('quizProgress')!.textContent = `Pertanyaan ${quiz.indeks + 1} dari ${quiz.total}`;
+    document.getElementById('quizScore')!.textContent = `Skor: ${quiz.skor}`;
+    document.getElementById('quizBar')!.style.width = `${(quiz.indeks / quiz.total) * 100}%`;
+    document.getElementById('quizQuestion')!.textContent = s.q;
+    opsiEl.replaceChildren(
+      ...s.opsi.map((opsi, i) => {
+        const b = document.createElement('button');
+        b.className = 'w-full text-left p-4 rounded-xl bg-charcoal border border-gold/30 hover:border-gold hover:bg-gold/20 text-amber-100 font-medium transition';
+        b.textContent = `${String.fromCharCode(65 + i)}. ${opsi}`;
+        b.addEventListener('click', () => jawab(i));
+        return b;
+      }),
+    );
+    terkunci = false;
+  }
+
+  function jawab(i: number) {
+    if (terkunci) return;
+    terkunci = true;
+    const r = quiz.jawab(i);
+    const tombol = [...opsiEl.children] as HTMLButtonElement[];
+    tombol.forEach((b) => (b.disabled = true));
+    tombol[r.jawabanBenar].classList.add('opsi-benar');
+    if (r.benar) mainkanNada(6);
+    else {
+      tombol[i].classList.add('opsi-salah');
+      bunyiSalah();
+    }
+    document.getElementById('quizScore')!.textContent = `Skor: ${quiz.skor}`;
+    setTimeout(() => (r.selesai ? selesai() : tampilkan()), 1100);
+  }
+
+  function selesai() {
+    wadah.classList.add('hidden');
+    hasil.classList.remove('hidden');
+    document.getElementById('finalScoreText')!.textContent = `Skor Akhir Anda: ${quiz.skor} / 100`;
+    document.getElementById('finalPesan')!.textContent =
+      quiz.skor === 100 ? 'Sempurna! Panjenengan ahli budaya Jawa Timur.' : quiz.skor >= 60 ? 'Apik! Pengetahuanmu sudah luas.' : 'Ayo jelajahi lagi bagian di atas, lalu coba sekali lagi.';
+    if (quiz.skor >= 60 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      confetti({ particleCount: 120, spread: 75, origin: { y: 0.6 }, colors: ['#d4af37', '#f3e5ab', '#ffffff'] });
+    }
+  }
+
+  document.getElementById('quizUlang')!.addEventListener('click', () => {
+    quiz.ulang();
+    hasil.classList.add('hidden');
+    wadah.classList.remove('hidden');
+    tampilkan();
+  });
+
+  tampilkan();
+</script>

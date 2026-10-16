@@ -1,0 +1,37 @@
+---
+import JudulSection from './JudulSection.astro';
+import { KULINER } from '../data/konten';
+---
+
+<section id="kuliner" class="scroll-mt-28">
+  <JudulSection
+    kecil="Cita Rasa Nusantara"
+    judul="Kuliner Khas Jawa Timur"
+    sub="Kenikmatan bumbu rempah legendaris, petis gurih, dan kuah rawon kluwek hitam"
+  />
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    {
+      KULINER.map((k) => (
+        <article class:list={['reveal-init', k.animasi, 'gold-card rounded-2xl overflow-hidden group']}>
+          <div class="relative h-48 overflow-hidden">
+            <img
+              src={k.gambar}
+              alt={k.nama}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              onerror={`this.onerror=null;this.src='${k.cadangan}'`}
+            />
+            <span class="absolute top-3 left-3 bg-gold text-obsidian text-xs font-bold px-3 py-1 rounded-full">{k.daerah}</span>
+          </div>
+          <div class="p-6">
+            <h3 class="font-serif text-xl font-bold text-gold mb-1">{k.nama}</h3>
+            <p class="text-xs text-amber-300 font-aksara mb-3" lang="jv">{k.aksara}</p>
+            <p class="text-amber-100/80 text-sm leading-relaxed">{k.deskripsi}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>

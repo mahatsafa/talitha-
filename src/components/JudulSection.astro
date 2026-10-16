@@ -1,0 +1,16 @@
+---
+interface Props {
+  kecil: string;
+  judul: string;
+  sub?: string;
+  serif?: boolean;
+}
+const { kecil, judul, sub, serif = true } = Astro.props;
+---
+
+<div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+  <span class="text-gold uppercase tracking-widest text-sm font-semibold">{kecil}</span>
+  <h2 class="font-cinzel text-3xl sm:text-5xl font-bold gold-gradient-text mt-2">{judul}</h2>
+  {sub && <p class:list={['text-amber-200/70 mt-3', serif && 'font-serif italic']}>{sub}</p>}
+  <div class="w-24 h-1 bg-linear-to-r from-transparent via-gold to-transparent mx-auto mt-4"></div>
+</div>
